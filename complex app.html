@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="BlancoPaulStyleSheet.css">
+
+<ul>
+  <li><a href="BlancoPaulHomepage.html">Home</a></li>
+  <li><a href="About You Page.html">About You</a></li>
+  <li><a href="Prototype Info.html">Prototype Info</a></li>
+  <li><a href="Marketing.html">Marketing</a></li>
+  <li><a href="User Guide.html">User Guide</a></li>
+  <li><a href="complex app.html">Working Prototype</a></li>
+</ul>
+    <title>To-Do List with Reminders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .task-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .task-list li input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .task-list li span {
+            flex-grow: 1;
+        }
+
+        .task-list li button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .task-list li.completed span {
+            text-decoration: line-through;
+        }
+
+        .form-group input[type="datetime-local"] {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List with Reminders</h1>
+    <div class="container">
+        <div class="form-group">
+            <input type="text" id="taskInput" placeholder="Enter task name">
+        </div>
+        <div class="form-group">
+            <input type="datetime-local" id="deadlineInput">
+        </div>
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList" class="task-list"></ul>
+    </div>
+    <script>
+        const taskList = document.getElementById('taskList');
+        const taskInput = document.getElementById('taskInput');
+        const deadlineInput = document.getElementById('deadlineInput');
+
+        // Add task to the list
+        function addTask() {
+            const taskName = taskInput.value.trim();
+            const deadline = deadlineInput.value.trim();
+            if (taskName && deadline) {
+                const taskItem = document.createElement('li');
+                taskItem.innerHTML = `
+                    <input type="checkbox" onchange="toggleTaskCompletion(this)">
+                    <span>${taskName} - ${deadline}</span>
+                    <button onclick="deleteTask(this)">Delete</button>
+                `;
+                taskList.appendChild(taskItem);
+                taskInput.value = '';
+                deadlineInput.value = '';
+                setReminder(taskName, deadline);
+            }
+        }
+
+        // Toggle task completion
+        function toggleTaskCompletion(checkbox) {
+            const taskItem = checkbox.parentNode;
+            taskItem.classList.toggle('completed');
+        }
+
+        // Delete task
+        function deleteTask(button) {
+            const taskItem = button.parentNode;
+            taskItem.remove();
+        }
+
+        // Set reminder
+        function setReminder(taskName, deadline) {
+            const reminderDate = new Date(deadline);
+            const currentDate = new Date();
+            const timeDifference = reminderDate - currentDate;
+            if (timeDifference > 0) {
+                setTimeout(() => {
+                    alert(`Reminder: ${taskName}`);
+                }, timeDifference);
+            }
+        }
+		</script>
+	</body>
+</html>
